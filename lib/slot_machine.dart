@@ -36,8 +36,8 @@ class _SlotMachineState
   var _backgroundStarted = false;
   
 
-  void _toggleMute() {
-    SoundService.toggleMute();
+  void _toggleMute() async {
+    await SoundService.toggleMute();
     setState(() {
       _isMuted = SoundService.isMuted;
     });
@@ -80,16 +80,16 @@ class _SlotMachineState
 
   Future<void> _spin() async {
     if (_coins <= 0 || _isSpinning) return;
-    SoundService.playClick;
+    await SoundService.playClick();
     setState(() {
       _isSpinning = true;
       _message = '';
     });
     if (!_backgroundStarted) {
-      SoundService.playBackground();
+      await SoundService.playBackground();
       _backgroundStarted = true;
     }
-    // Барабаны крутятся разное количество тиков
+
     final result1 = await _spinReel(
       totalTicks: 10,
       onTick: (val) =>
